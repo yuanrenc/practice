@@ -19,23 +19,22 @@ app.post("/tasks", (req, res) => {
 });
 
 app.get("/tasks", (req, res) => {
-  res.status(200).json(data);
+  return res.status(200).json(data);
 });
 
 app.get("/tasks/:id", (req, res) => {
   const { id } = req.params;
-  for (var i = 0; i < data.length; i++) {
-    if (data[i].id == id) {
-      return res.status(200).json(data[i]);
-    }
+  const task = data.find((task) => task.id === parseInt(id));
+  if (!task) {
+    return res.status(404).send("Task not found");
   }
-  return res.status(404).send("Task not found");
+  return res.json(task);
 });
 
 app.put("/tasks/:id", (req, res) => {
   const { id } = req.params;
   for (const task of data) {
-    if (task.id == id) {
+    if (task.id === parseInt(id)) {
       task.done = true;
       return res.status(200).send(task);
     }
@@ -46,7 +45,7 @@ app.put("/tasks/:id", (req, res) => {
 app.delete("/tasks/:id", (req, res) => {
   const { id } = req.params;
   for (var i = 0; i < data.length; i++) {
-    if (data[i].id == id) {
+    if (data[i].id === parseInt(id)) {
       // console.log(data);
       data.splice(i, 1);
       // console.log(data);
