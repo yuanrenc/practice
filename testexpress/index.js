@@ -19,42 +19,37 @@ app.post("/tasks", (req, res) => {
 });
 
 app.get("/tasks", (req, res) => {
-  return res.status(200).json(data);
+  res.status(200).json(data);
 });
 
 app.get("/tasks/:id", (req, res) => {
-  res.json();
-});
-//   console.log(idData);
-//   if (idData.length > 0) {
-//     res.status(200).json(idData);
-//   } else {
-//     res.status(404).send("Task not found");
-//   }
-// });
-
-app.put("/tasks/:id", (req, res) => {
-  const { description, done } = req.body;
-  const targettask = [];
-  for (const task of data) {
-    if (task.id == id) {
-      task.description = description;
-      task.done = true;
-      targettask.push(task);
-      return res.status(200).send("The task successfully updated");
+  const { id } = req.params;
+  for (var i = 0; i < data.length; i++) {
+    if (data[i].id == id) {
+      return res.status(200).json(data[i]);
     }
   }
-  if (targettask.length == 0) {
-    return res.status(404).send("Task did not found.");
+  return res.status(404).send("Task not found");
+});
+
+app.put("/tasks/:id", (req, res) => {
+  const { id } = req.params;
+  for (const task of data) {
+    if (task.id == id) {
+      task.done = true;
+      return res.status(200).send(task);
+    }
   }
+  return res.status(404).send("Task did not found.");
 });
 
 app.delete("/tasks/:id", (req, res) => {
   const { id } = req.params;
   for (var i = 0; i < data.length; i++) {
     if (data[i].id == id) {
+      // console.log(data);
       data.splice(i, 1);
-      console.log(data);
+      // console.log(data);
       return res.status(204).send("The task successfully deleted");
     }
   }
