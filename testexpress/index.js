@@ -21,10 +21,10 @@ app.post('/tasks', (req, res) => {
 app.get('/tasks', (req, res) => {
   const { description } = req.query;
   if (description) {
-    const filterd = data.filter((item) =>
+    const filtered = data.filter((item) =>
       item.description.includes(description)
     );
-    return res.status(200).json(filterd);
+    return res.status(200).json(filtered);
   }
   return res.status(200).json(data);
 });
